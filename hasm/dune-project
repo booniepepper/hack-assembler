@@ -5,22 +5,22 @@
 (generate_opam_files true)
 
 (source
- (github username/reponame))
+ (github hiljusti/hack-assembler))
 
-(authors "Author Name")
+(authors "J.R. Hill")
 
-(maintainers "Maintainer Name")
+(maintainers "J.R. Hill")
 
-(license LICENSE)
+(license BSD-3-Clause)
 
-(documentation https://url/to/documentation)
+(documentation https://github.com/hiljusti/hack-assembler)
 
 (package
  (name hasm)
- (synopsis "A short synopsis")
- (description "A longer description")
+ (synopsis "Hack Assembler")
+ (description "A Hack Assembler, as specified in chapter 6 of 'The Elements of Computing Systems'")
  (depends ocaml dune)
  (tags
-  (topics "to describe" your project)))
+  (topics "hack" "assembler")))
 
 ; See the complete stanza docs at https://dune.readthedocs.io/en/stable/dune-files.html#dune-project
