@@ -1,1 +1,4 @@
-let () = print_endline "Hello, World!"
+open Hasm
+
+let () = n |> binstr16 |> print_endline
+

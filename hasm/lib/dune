@@ -1,2 +1,3 @@
 (library
- (name hasm))
+ (name hasm)
+ (libraries str stdint))

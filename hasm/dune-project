@@ -19,7 +19,10 @@
  (name hasm)
  (synopsis "Hack Assembler")
  (description "A Hack Assembler, as specified in chapter 6 of 'The Elements of Computing Systems'")
- (depends ocaml dune)
+ (depends
+    (ocaml (>= 4.11))
+    dune
+    (stdint (>= 0.7)))
  (tags
   (topics "hack" "assembler")))
 
