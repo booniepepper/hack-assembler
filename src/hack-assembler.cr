@@ -1,13 +1,15 @@
-module Hack::Assembler
-  VERSION = "0.1.0"
+require "./parse"
 
+def stdin_lines(&f)
+  line = gets
+  while !line.nil?
+    yield line
+    line = gets
+  end
+end
 
-  patterns = {
-    addr: /^@(.+)$/,
-    dest: /^([DAM][DAM]?[DAM]?)=/,
-    comp: /^(.+=)?(.+?)(;.+)?$/,
-    jmp: /^.+;(.+)$/
-  }
+stdin_lines do |line|
+  instruction = parse_instruction(line).inspect
 
-  puts "yo"
+  puts instruction
 end
