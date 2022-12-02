@@ -1,6 +1,9 @@
 require "./parse"
 require "./util"
 
+# TODO: Take filename as input, -o flag for output (default, name with extension of .hack)
+# TODO: Symbols
+
 stdin_lines do |line|
   instruction = parse_instruction line
   unless instruction.nil?

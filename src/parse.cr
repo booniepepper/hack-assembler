@@ -1,6 +1,8 @@
-alias AInstruction = NamedTuple(addr: UInt16)
+alias AInstruction = NamedTuple(addr: UInt16) # TODO: or symbol
 alias CInstruction = NamedTuple(dest: UInt16, comp: UInt16, jmp: UInt16)
 alias MalformedLine = NamedTuple(raw: String)
+
+# TODO: Different file?
 
 def parse_dest(str : String | Nil) : UInt16
   {
