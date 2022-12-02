@@ -1,15 +1,6 @@
 require "./parse"
-
-def stdin_lines(&f)
-  line = gets
-  while !line.nil?
-    yield line
-    line = gets
-  end
-end
+require "./util"
 
 stdin_lines do |line|
-  instruction = parse_instruction(line).inspect
-
-  puts instruction
+  puts parse_instruction(line).inspect
 end
