@@ -53,6 +53,17 @@ else
   outfile = outfile_input.not_nil!
 end
 
+if File.exists? outfile
+  File.delete outfile
+end
+
+File.touch outfile
+
+if ! File.writable? outfile
+  STDERR.puts "Not allowed to write to file: #{outfile.inspect}"
+  exit 1
+end
+
 puts "Assembling #{infile.inspect} to #{outfile.inspect}"
 
 File.each_line infile do |line|
@@ -63,7 +74,9 @@ File.each_line infile do |line|
     # Of course, in a real assembler, we'd output binary directly. The
     # specification of the Hack machine, though, expects ascii-encoded lines
     # of binary.
-    printf "%016b\n",  binary
+    binstring = sprintf "%016b\n",  binary
+
+    File.write outfile, binstring, mode: "a"
   end
 end
 
