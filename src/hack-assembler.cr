@@ -1,7 +1,6 @@
 require "option_parser"
 require "./parse"
 
-# TODO: Take filename as input, -o flag for output (default, name with extension of .hack)
 # TODO: Symbols
 
 infile_input : String | Nil = nil
