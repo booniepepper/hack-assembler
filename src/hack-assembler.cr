@@ -53,6 +53,8 @@ else
   outfile = outfile_input.not_nil!
 end
 
+puts "Assembling #{infile.inspect} to #{outfile.inspect}"
+
 File.each_line infile do |line|
   instruction = parse_instruction line
   unless instruction.nil?
@@ -64,3 +66,5 @@ File.each_line infile do |line|
     printf "%016b\n",  binary
   end
 end
+
+puts "DONE"
