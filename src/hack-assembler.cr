@@ -1,6 +1,5 @@
 require "option_parser"
 require "./parse"
-require "./util"
 
 # TODO: Take filename as input, -o flag for output (default, name with extension of .hack)
 # TODO: Symbols
