@@ -8,7 +8,7 @@ option_parser = OptionParser.parse do |parser|
   parser.banner = "Usage: hasm [-o OUTFILE] INFILE"
 
   parser.on "-v", "--version", "Show version" do
-    puts "hasm 0.1"
+    puts "hasm 1.0"
     exit
   end
 
