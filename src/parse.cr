@@ -6,8 +6,6 @@ alias AInstruction = Address | AssemblySymbol
 alias CInstruction = NamedTuple(dest: UInt16, comp: UInt16, jmp: UInt16)
 alias MalformedLine = NamedTuple(raw: String)
 
-# TODO: Different file?
-
 def parse_dest(str : String | Nil) : UInt16
   {
     nil => 0b000,

@@ -1,8 +1,6 @@
 require "option_parser"
 require "./parse"
 
-# TODO: Symbols
-
 infile_input : String | Nil = nil
 outfile_input : String | Nil = nil
 
@@ -109,7 +107,7 @@ first_pass.select do |instr| # Capture the lines that labels should reference
     # specification of the Hack machine, though, expects ascii-encoded lines
     # of binary.
     binstring = sprintf "%016b\n", u16
-    
+
     File.write outfile, binstring, mode: "a"
   end
 
