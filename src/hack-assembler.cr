@@ -75,7 +75,7 @@ next_variable : UInt16 = 0x0010
 first_pass.select do |instr| # Capture the lines that labels should reference
     if instr.is_a? LabelAs
       label = instr[:label_as]
-      directory[label] = i + 1
+      directory[label] = i
       false
     else
       i += 1
