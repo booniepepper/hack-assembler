@@ -1,4 +1,8 @@
-alias AInstruction = NamedTuple(addr: UInt16) # TODO: or symbol
+alias Label = String
+alias LabelAs = NamedTuple(label_as: Label)
+alias AssemblySymbol = NamedTuple(symbol: Label)
+alias Address = NamedTuple(addr: UInt16)
+alias AInstruction = Address | AssemblySymbol
 alias CInstruction = NamedTuple(dest: UInt16, comp: UInt16, jmp: UInt16)
 alias MalformedLine = NamedTuple(raw: String)
 
@@ -63,17 +67,55 @@ def parse_jmp(str : String | Nil) : UInt16
   }[str].to_u16
 end
 
-def parse_instruction(raw : String) : AInstruction | CInstruction | MalformedLine | Nil
+def parse_label(label : Label) : UInt16 | Label
+  {
+    "SP" => 0x000,
+    "LCL" => 0x0001,
+    "ARG" => 0x0002,
+    "THIS" => 0x0003,
+    "THAT" => 0x0004,
+    "R0" => 0x0000,
+    "R1" => 0x0001,
+    "R2" => 0x0002,
+    "R3" => 0x0003,
+    "R4" => 0x0004,
+    "R5" => 0x0005,
+    "R6" => 0x0006,
+    "R7" => 0x0007,
+    "R8" => 0x0008,
+    "R9" => 0x0009,
+    "R10" => 0x000a,
+    "R11" => 0x000b,
+    "R12" => 0x000c,
+    "R13" => 0x000d,
+    "R14" => 0x000e,
+    "R15" => 0x000f,
+    "SCREEN" => 0x4000,
+    "KBD" => 0x6000,
+  }[label]?.try { |n| n.to_u16 } || label
+end
+
+def parse_instruction(raw : String) : AInstruction | CInstruction | LabelAs | MalformedLine | Nil
   raw = raw.gsub(/\/\/.+/, "").strip
 
   return nil if raw == ""
 
   if raw.starts_with? '@'
-    addr = /^@(.+)$/.match(raw).try {|match| UInt16.new match[1]}
+    addr = raw[1, raw.size - 1]
 
-    unless addr.nil?
-      return { addr: addr }
+    if addr =~ /^[0-9]+$/
+      return { addr: UInt16.new addr }
     end
+
+    dest = parse_label addr
+
+    if dest.is_a? UInt16
+      return { addr: dest }
+    else
+      return { symbol: dest }
+    end
+  elsif raw.starts_with?('(') && raw.ends_with?(')')
+    return { label_as: raw[1, raw.size - 2] }
   else
     dest = /^([DAM][DAM]?[DAM]?)=/.match(raw).try(&.[1])
     comp = /^(.+=)?(.+?)(;.+)?$/.match(raw).try(&.[2])
@@ -91,12 +133,16 @@ def parse_instruction(raw : String) : AInstruction | CInstruction | MalformedLin
   { raw: raw }
 end
 
-def instruction_to_binary(inst) : UInt16
-    if inst.is_a? AInstruction
-        inst[:addr]
-    elsif inst.is_a? CInstruction
-        c = 0b111.to_u16 << 13 | inst[:comp] << 6 | inst[:dest] << 3 | inst[:jmp]
-    else
-        raise "unknown instruction: #{inst.inspect}"
-    end
+def instruction_to_intermediate(inst) : UInt16 | AssemblySymbol | LabelAs
+  if inst.is_a? Address
+    inst[:addr]
+  elsif inst.is_a? CInstruction
+    c = 0b111.to_u16 << 13 | inst[:comp] << 6 | inst[:dest] << 3 | inst[:jmp]
+  elsif inst.is_a? AssemblySymbol
+    inst
+  elsif inst.is_a? LabelAs
+    inst
+  else
+    raise "unknown instruction: #{inst.inspect}"
+  end
 end

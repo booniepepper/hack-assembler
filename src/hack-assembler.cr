@@ -65,18 +65,52 @@ end
 
 puts "Assembling #{infile.inspect} to #{outfile.inspect}"
 
-File.each_line infile do |line|
-  instruction = parse_instruction line
-  unless instruction.nil?
-    binary = instruction_to_binary instruction
+first_pass : Array(UInt16 | AssemblySymbol | LabelAs) = File.read_lines(infile)
+  .map { |raw| parse_instruction raw }
+  .select { |instr| ! instr.nil? }
+  .map { |instr| instruction_to_intermediate instr }
 
+directory = {} of String => UInt16
+i : UInt16 = 0
+next_variable : UInt16 = 0x0010
+
+first_pass.select do |instr| # Capture the lines that labels should reference
+    if instr.is_a? LabelAs
+      label = instr[:label_as]
+      directory[label] = i + 1
+      false
+    else
+      i += 1
+      instr
+    end
+  end
+  .map do |instr| # Dereference symbols that point to labels
+    if instr.is_a? AssemblySymbol
+      label = instr[:symbol]
+      directory[label]? || instr
+    else
+      instr
+    end
+  end
+  .map do |instr| # Dereference remaining symbols to RAM addresses
+    if instr.is_a? AssemblySymbol
+      label = instr[:symbol]
+      if ! directory.has_key? label
+        directory[label] = next_variable
+        next_variable += 1
+      end
+      directory[label]
+    else
+      instr
+    end
+  end
+  .each do |u16|
     # Of course, in a real assembler, we'd output binary directly. The
     # specification of the Hack machine, though, expects ascii-encoded lines
     # of binary.
-    binstring = sprintf "%016b\n",  binary
-
+    binstring = sprintf "%016b\n", u16
+    
     File.write outfile, binstring, mode: "a"
   end
-end
 
 puts "DONE"
