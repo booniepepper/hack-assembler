@@ -1,27 +1,27 @@
 # hack-assembler
 
-TODO: Write a description here
+An assembler for the Hack virtual machine, as specified in the book
+_The Elements of Computing Systems_. I followed the machine specifications,
+but not the exact strategy laid out for implementation.
 
-## Installation
-
-TODO: Write installation instructions here
+See also: https://nand2tetris.com
 
 ## Usage
 
-TODO: Write usage instructions here
+Clone & build:
 
-## Development
+```
+$ git clone [etc] && cd hack-assembler
+$ shards build
+```
 
-TODO: Write development instructions here
+This will compile an assembler CLI to `./bin/hasm` which you can
+put wherever you prefer.
 
-## Contributing
+## Development/Contributing
 
-1. Fork it (<https://github.com/your-github-user/hack-assembler/fork>)
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
+Development has concluded. It's just project 6 of 11. :)
 
 ## Contributors
 
-- [ｈｉｌｊｕｓｔｉ](https://github.com/your-github-user) - creator and maintainer
+- [J.R. Hill](https://github.com/hiljusti) - author
