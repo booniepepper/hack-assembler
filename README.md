@@ -24,4 +24,4 @@ Development has concluded. It's just project 6 of 11. :)
 
 ## Contributors
 
-- [J.R. Hill](https://github.com/hiljusti) - author
+[J.R. Hill](https://github.com/booniepepper)

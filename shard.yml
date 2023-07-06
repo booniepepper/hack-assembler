@@ -2,7 +2,7 @@ name: hack-assembler
 version: 1.0.0
 
 authors:
-  - J.R. Hill <hiljusti@so.dang.cool>
+  - J.R. Hill <justin@so.dang.cool>
 
 targets:
   hasm:
